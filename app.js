@@ -8,7 +8,15 @@ const appData = {
     schedule: [],
     resources: [],
     currentView: 'dashboard',
-    theme: 'light'
+    theme: 'light',
+    userProfile: {
+        name: '',
+        email: '',
+        bio: '',
+        goal: '',
+        skills: [],
+        avatarIcon: 'fa-user'
+    }
 };
 
 // Quotes
@@ -970,8 +978,198 @@ function initNetworkAnimation() {
     animate();
 }
 
+// User Profile Functions
+function openUserProfile() {
+    const modal = document.getElementById('userProfileModal');
+    if (!modal) return;
+    
+    // Load saved profile data
+    loadUserProfile();
+    
+    // Show modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    // Focus on first input
+    setTimeout(() => {
+        document.getElementById('userName')?.focus();
+    }, 100);
+}
+
+function closeUserProfile() {
+    const modal = document.getElementById('userProfileModal');
+    if (!modal) return;
+    
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function loadUserProfile() {
+    // Load from localStorage if available
+    const savedProfile = localStorage.getItem('aura-user-profile');
+    if (savedProfile) {
+        try {
+            appData.userProfile = JSON.parse(savedProfile);
+        } catch (e) {
+            console.error('Error loading profile:', e);
+        }
+    }
+    
+    // Populate form fields
+    document.getElementById('userName').value = appData.userProfile.name || '';
+    document.getElementById('userEmail').value = appData.userProfile.email || '';
+    document.getElementById('userBio').value = appData.userProfile.bio || '';
+    document.getElementById('userGoal').value = appData.userProfile.goal || '';
+    document.getElementById('userSkills').value = appData.userProfile.skills.join(', ') || '';
+    
+    // Update avatar icon
+    const avatarIcon = document.getElementById('profileAvatarIcon');
+    if (avatarIcon) {
+        avatarIcon.className = `fas ${appData.userProfile.avatarIcon}`;
+    }
+}
+
+function saveUserProfile(event) {
+    event.preventDefault();
+    
+    // Get form values
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    const bio = document.getElementById('userBio').value.trim();
+    const goal = document.getElementById('userGoal').value.trim();
+    const skillsInput = document.getElementById('userSkills').value.trim();
+    const skills = skillsInput ? skillsInput.split(',').map(s => s.trim()).filter(s => s) : [];
+    
+    // Validate required fields
+    if (!name) {
+        showToast('Please enter your name', 'error');
+        return;
+    }
+    
+    if (!email) {
+        showToast('Please enter your email', 'error');
+        return;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+    }
+    
+    // Update profile
+    appData.userProfile = {
+        ...appData.userProfile,
+        name,
+        email,
+        bio,
+        goal,
+        skills
+    };
+    
+    // Save to localStorage
+    localStorage.setItem('aura-user-profile', JSON.stringify(appData.userProfile));
+    
+    // Update UI
+    updateUserGreeting();
+    
+    // Close modal
+    closeUserProfile();
+    
+    // Show success message
+    showToast('Profile updated successfully!', 'success');
+}
+
+function updateUserGreeting() {
+    if (appData.userProfile.name) {
+        const greetingElement = document.getElementById('greetingText');
+        if (greetingElement) {
+            const hour = new Date().getHours();
+            let greeting;
+            if (hour >= 5 && hour < 12) {
+                greeting = 'Good morning';
+            } else if (hour >= 12 && hour < 17) {
+                greeting = 'Good afternoon';
+            } else if (hour >= 17 && hour < 22) {
+                greeting = 'Good evening';
+            } else {
+                greeting = 'Welcome back';
+            }
+            greetingElement.textContent = `${greeting}, ${appData.userProfile.name.split(' ')[0]}`;
+        }
+    }
+}
+
+function changeAvatar() {
+    const avatarIcons = [
+        'fa-user',
+        'fa-user-circle',
+        'fa-user-astronaut',
+        'fa-user-ninja',
+        'fa-user-graduate',
+        'fa-user-tie',
+        'fa-smile',
+        'fa-grin',
+        'fa-laugh',
+        'fa-grin-stars'
+    ];
+    
+    // Show selection options
+    const currentIndex = avatarIcons.indexOf(appData.userProfile.avatarIcon);
+    const nextIndex = (currentIndex + 1) % avatarIcons.length;
+    appData.userProfile.avatarIcon = avatarIcons[nextIndex];
+    
+    // Update display
+    const avatarIcon = document.getElementById('profileAvatarIcon');
+    if (avatarIcon) {
+        avatarIcon.className = `fas ${appData.userProfile.avatarIcon}`;
+    }
+    
+    // Update header avatar
+    const headerAvatar = document.querySelector('#userAvatar i');
+    if (headerAvatar) {
+        headerAvatar.className = `fas ${appData.userProfile.avatarIcon}`;
+    }
+    
+    showToast('Avatar updated!', 'success');
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+    const modal = document.getElementById('userProfileModal');
+    if (event.target === modal) {
+        closeUserProfile();
+    }
+});
+
+// Close modal with Escape key
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('userProfileModal');
+        if (modal && modal.style.display === 'flex') {
+            closeUserProfile();
+        }
+    }
+});
+
 // Initialize on load
 window.addEventListener('DOMContentLoaded', () => {
     initApp();
     setupDayCardListeners();
+    // Load user profile and update greeting
+    const savedProfile = localStorage.getItem('aura-user-profile');
+    if (savedProfile) {
+        try {
+            appData.userProfile = JSON.parse(savedProfile);
+            updateUserGreeting();
+            // Update header avatar icon
+            const headerAvatar = document.querySelector('#userAvatar i');
+            if (headerAvatar && appData.userProfile.avatarIcon) {
+                headerAvatar.className = `fas ${appData.userProfile.avatarIcon}`;
+            }
+        } catch (e) {
+            console.error('Error loading profile:', e);
+        }
+    }
 });

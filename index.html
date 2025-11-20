@@ -25,9 +25,9 @@
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
-            <div class="user-avatar">
+            <button class="user-avatar" id="userAvatar" aria-label="User Profile" title="View Profile" onclick="openUserProfile()">
                 <i class="fas fa-user"></i>
-            </div>
+            </button>
         </div>
     </header>
 
@@ -482,6 +482,62 @@
 
     <!-- Toast Container -->
     <div id="toastContainer"></div>
+
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+            <div class="modal-header">
+                <h2 id="modalTitle">User Profile</h2>
+                <button class="modal-close" onclick="closeUserProfile()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-avatar-section">
+                    <div class="profile-avatar-display">
+                        <i class="fas fa-user" id="profileAvatarIcon"></i>
+                    </div>
+                    <button class="btn btn-secondary ripple" onclick="changeAvatar()">
+                        <i class="fas fa-camera"></i> Change Avatar
+                    </button>
+                </div>
+                
+                <form id="userProfileForm" onsubmit="saveUserProfile(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="userName">Full Name</label>
+                        <input type="text" id="userName" class="form-input" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="userEmail">Email</label>
+                        <input type="email" id="userEmail" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="userBio">Bio</label>
+                        <textarea id="userBio" class="form-textarea" rows="3" placeholder="Tell us about yourself..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="userGoal">Learning Goal</label>
+                        <input type="text" id="userGoal" class="form-input" placeholder="What's your current learning goal?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="userSkills">Skills (comma-separated)</label>
+                        <input type="text" id="userSkills" class="form-input" placeholder="JavaScript, Python, React...">
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary ripple" onclick="closeUserProfile()">Cancel</button>
+                        <button type="submit" class="btn ripple">
+                            <i class="fas fa-save"></i> Save Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Animated Network Background Canvas -->
     <canvas id="networkCanvas"></canvas>
