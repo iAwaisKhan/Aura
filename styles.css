@@ -1976,6 +1976,58 @@ body::after {
     animation: glow 1.5s ease-in-out infinite;
 }
 
+/* Resource Card Styles */
+.resource-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.resource-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.resource-card:hover::before {
+    transform: scaleX(1);
+}
+
+.resource-category-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-lg);
+    transition: all 0.3s ease;
+}
+
+.resource-card:hover .resource-category-icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.resource-category-badge {
+    padding: var(--space-4) var(--space-10);
+    border-radius: var(--radius-base);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    border: 1px solid currentColor;
+}
+
 /* Week Overview Grid */
 .week-overview-grid {
     display: grid;
@@ -1988,6 +2040,14 @@ body::after {
     .week-overview-grid {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         gap: var(--space-8);
+    }
+    
+    .resource-category-icon {
+        width: 32px;
+        height: 32px;
+        font-size: var(--font-size-base);
+    }
+}
     }
 }
 
@@ -2958,6 +3018,263 @@ body::after {
 /* Update user-avatar to be clickable */
 .user-avatar {
   cursor: pointer;
+  position: relative;
+}
+
+.user-avatar::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-success);
+  border: 2px solid var(--color-surface);
+  border-radius: 50%;
+}
+
+/* Focus Mode Styles */
+.focus-duration-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-16);
+}
+
+.focus-duration-btn {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.focus-duration-btn:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-bg-1);
+}
+
+.focus-duration-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-4);
+}
+
+.focus-duration-time {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.focus-duration-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Focus Session Modal */
+.focus-modal {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.focus-modal-content {
+  max-width: 600px;
+  text-align: center;
+  background: var(--color-surface);
+  padding: var(--space-32);
+}
+
+.focus-session-header h2 {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-8);
+  color: var(--color-text);
+}
+
+.focus-session-subtitle {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-32);
+}
+
+.focus-timer-container {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-32) 0;
+}
+
+.focus-timer-circle {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+.focus-progress-ring {
+  transform: rotate(-90deg);
+}
+
+.focus-progress-ring-bg {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 8;
+}
+
+.focus-progress-ring-progress {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 817;
+  stroke-dashoffset: 817;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.focus-timer-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+  font-weight: var(--font-weight-bold);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.focus-progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: var(--color-border);
+  border-radius: var(--radius-base);
+  overflow: hidden;
+  margin-bottom: var(--space-24);
+}
+
+.focus-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+  width: 0%;
+  transition: width 1s linear;
+  border-radius: var(--radius-base);
+}
+
+.focus-session-controls {
+  display: flex;
+  gap: var(--space-16);
+  justify-content: center;
+  margin-bottom: var(--space-24);
+}
+
+.focus-session-controls button {
+  min-width: 140px;
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.focus-motivational-quote {
+  padding: var(--space-16);
+  background: var(--color-bg-1);
+  border-radius: var(--radius);
+  font-style: italic;
+  color: var(--color-text-secondary);
+  border-left: 4px solid var(--color-primary);
+}
+
+/* Confetti Animation */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  z-index: 10001;
+  animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .modal {
+    padding: var(--space-12);
+  }
+  
+  .modal-content {
+    max-height: 95vh;
+  }
+  
+  .modal-header,
+  .modal-body {
+    padding: var(--space-16);
+  }
+  
+  .profile-avatar-display {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .modal-actions button {
+    width: 100%;
+  }
+  
+  .focus-duration-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .focus-timer-circle {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .focus-timer-display {
+    font-size: 48px;
+  }
+  
+  .focus-session-controls {
+    flex-direction: column;
+  }
+  
+  .focus-session-controls button {
+    width: 100%;
+  }
+}
   position: relative;
 }
 

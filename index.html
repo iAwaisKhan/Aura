@@ -402,28 +402,106 @@
         <div id="focusView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Focus Mode</h1>
+                <button class="btn btn-secondary ripple" onclick="viewFocusHistory()">
+                    <i class="fas fa-history"></i> View History
+                </button>
             </div>
+            
             <div class="stats-grid">
                 <div class="stat-card card">
-                    <div class="stat-value" id="focusStreak">0</div>
-                    <div class="stat-label">Focus Streak</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="focusStreak" data-target="0">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
                 </div>
                 <div class="stat-card card">
-                    <div class="stat-value" id="minutesToday">0</div>
-                    <div class="stat-label">Minutes Today</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="minutesToday" data-target="0">0</div>
+                        <div class="stat-label">Minutes Today</div>
+                    </div>
                 </div>
                 <div class="stat-card card">
-                    <div class="stat-value" id="weeklyHours">0</div>
-                    <div class="stat-label">Weekly Hours</div>
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="weeklyHours" data-target="0">0</div>
+                        <div class="stat-label">Weekly Hours</div>
+                    </div>
+                </div>
+                <div class="stat-card card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalSessions">0</div>
+                        <div class="stat-label">Total Sessions</div>
+                    </div>
                 </div>
             </div>
+            
             <div class="card" style="margin-top: var(--space-lg);">
                 <h3 style="margin-bottom: var(--space-md);">Start Focus Session</h3>
-                <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
-                    <button class="btn ripple" onclick="startFocusSession(25)">25 min</button>
-                    <button class="btn ripple" onclick="startFocusSession(45)">45 min</button>
-                    <button class="btn ripple" onclick="startFocusSession(60)">60 min</button>
+                <p style="color: var(--color-text-secondary); margin-bottom: var(--space-lg); font-size: var(--font-size-sm);">
+                    Choose a duration for your focused work session. Stay productive and track your progress!
+                </p>
+                <div class="focus-duration-grid">
+                    <button class="focus-duration-btn ripple" onclick="startFocusSession(15)">
+                        <div class="focus-duration-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="focus-duration-time">15 min</div>
+                        <div class="focus-duration-label">Quick Sprint</div>
+                    </button>
+                    <button class="focus-duration-btn ripple" onclick="startFocusSession(25)">
+                        <div class="focus-duration-icon">
+                            <i class="fas fa-tomato"></i>
+                        </div>
+                        <div class="focus-duration-time">25 min</div>
+                        <div class="focus-duration-label">Pomodoro</div>
+                    </button>
+                    <button class="focus-duration-btn ripple" onclick="startFocusSession(45)">
+                        <div class="focus-duration-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="focus-duration-time">45 min</div>
+                        <div class="focus-duration-label">Deep Work</div>
+                    </button>
+                    <button class="focus-duration-btn ripple" onclick="startFocusSession(60)">
+                        <div class="focus-duration-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="focus-duration-time">60 min</div>
+                        <div class="focus-duration-label">Power Hour</div>
+                    </button>
                 </div>
+                
+                <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-border);">
+                    <h4 style="margin-bottom: var(--space-md); font-size: var(--font-size-base);">Custom Duration</h4>
+                    <div style="display: flex; gap: var(--space-md); align-items: center;">
+                        <input type="number" id="customFocusMinutes" class="form-input" placeholder="Minutes" min="1" max="180" style="width: 150px;">
+                        <button class="btn btn-secondary ripple" onclick="startCustomFocusSession()">
+                            <i class="fas fa-play"></i> Start Custom Session
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: var(--space-lg);">
+                <h3 style="margin-bottom: var(--space-md);">Focus Tips</h3>
+                <ul style="color: var(--color-text-secondary); font-size: var(--font-size-sm); line-height: 1.8; padding-left: var(--space-20);">
+                    <li>Eliminate distractions before starting</li>
+                    <li>Set a clear goal for the session</li>
+                    <li>Keep your phone away or on silent mode</li>
+                    <li>Take regular breaks between sessions</li>
+                    <li>Stay hydrated and maintain good posture</li>
+                </ul>
             </div>
         </div>
 
@@ -435,6 +513,36 @@
                     <i class="fas fa-plus"></i> Add Resource
                 </button>
             </div>
+            
+            <div class="card" style="margin-bottom: var(--space-lg);">
+                <div style="display: flex; gap: var(--space-md); flex-wrap: wrap; align-items: center;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <input type="text" id="resourceSearch" class="form-input" placeholder="Search resources..." oninput="filterResources()">
+                    </div>
+                    <div style="min-width: 180px;">
+                        <select class="form-select" id="resourceCategoryFilter" onchange="filterResources()">
+                            <option value="all">All Categories</option>
+                            <option value="Documentation">Documentation</option>
+                            <option value="Course">Courses</option>
+                            <option value="Practice">Practice</option>
+                            <option value="Video">Videos</option>
+                            <option value="Tool">Tools</option>
+                            <option value="Community">Community</option>
+                            <option value="Design">Design</option>
+                            <option value="Blog">Blogs</option>
+                            <option value="Reference">Reference</option>
+                            <option value="Resource">Resources</option>
+                            <option value="News">News</option>
+                            <option value="Newsletter">Newsletters</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary ripple" onclick="resetResourceFilters()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+                <div id="resourceCount" style="margin-top: var(--space-md); color: var(--color-text-secondary); font-size: var(--font-size-sm);"></div>
+            </div>
+            
             <div id="resourcesContainer" class="grid-2"></div>
         </div>
 
@@ -535,6 +643,45 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Focus Session Modal -->
+    <div id="focusSessionModal" class="modal focus-modal">
+        <div class="modal-content focus-modal-content">
+            <div class="focus-session-header">
+                <h2>Focus Session Active</h2>
+                <p class="focus-session-subtitle">Stay focused and complete your session!</p>
+            </div>
+            
+            <div class="focus-timer-container">
+                <div class="focus-timer-circle">
+                    <svg class="focus-progress-ring" width="280" height="280">
+                        <circle class="focus-progress-ring-bg" cx="140" cy="140" r="130"></circle>
+                        <circle class="focus-progress-ring-progress" cx="140" cy="140" r="130" id="focusProgressCircle"></circle>
+                    </svg>
+                    <div class="focus-timer-display" id="focusTimerDisplay">25:00</div>
+                </div>
+            </div>
+            
+            <div class="focus-progress-bar-container">
+                <div class="focus-progress-bar" id="focusProgressBar"></div>
+            </div>
+            
+            <div class="focus-session-controls">
+                <button class="btn btn-secondary ripple" id="focusPauseBtn" onclick="pauseFocusSession()">
+                    <i class="fas fa-pause"></i>
+                    <span>Pause</span>
+                </button>
+                <button class="btn btn-danger ripple" onclick="stopFocusSession()">
+                    <i class="fas fa-stop"></i>
+                    <span>End Session</span>
+                </button>
+            </div>
+            
+            <div class="focus-motivational-quote" id="focusMotivationalQuote">
+                "Stay focused, good things take time."
             </div>
         </div>
     </div>
