@@ -1,18 +1,18 @@
-
-// Initialize Lenis Smooth Scroll
+// smooth scroll lib
 let lenis;
 
 function initLenisScroll() {
     lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        duration: 0.8,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
         orientation: 'vertical',
         gestureOrientation: 'vertical',
         smoothWheel: true,
-        wheelMultiplier: 1,
+        wheelMultiplier: 0.8,
         smoothTouch: false,
-        touchMultiplier: 2,
+        touchMultiplier: 1.5,
         infinite: false,
+        lerp: 0.1
     });
 
     function raf(time) {
@@ -21,23 +21,8 @@ function initLenisScroll() {
     }
 
     requestAnimationFrame(raf);
-
-    // Apply Lenis to all scrollable containers
-    const scrollableContainers = [
-        document.querySelector('.main-content'),
-        document.querySelector('.sidebar'),
-        ...document.querySelectorAll('.modal-content'),
-        ...document.querySelectorAll('.view')
-    ];
-
-    scrollableContainers.forEach(container => {
-        if (container) {
-            container.setAttribute('data-lenis-prevent', '');
-        }
-    });
 }
 
-// Helper functions for Lenis modal integration
 function stopLenisScroll() {
     if (lenis) {
         lenis.stop();
@@ -109,9 +94,7 @@ const quotes = [
     { text: "Learning never exhausts the mind.", author: "Leonardo da Vinci" }
 ];
 
-// Initialize Theme
 function initTheme() {
-    // Load saved theme from localStorage or detect system preference
     const savedTheme = localStorage.getItem('studyhub-theme');
     let theme = savedTheme || 'auto';
     
@@ -140,10 +123,10 @@ function initTheme() {
     }
 }
 
-// Initialize App
 function initApp() {
     initLenisScroll();
     initTheme();
+    initSettingsUI();
     loadSampleData();
     setupEventListeners();
     updateDashboard();
@@ -174,7 +157,6 @@ function initApp() {
     }
 }
 
-// Load Sample Data
 function loadSampleData() {
     appData.notes = [
         { id: 1, title: "JavaScript Basics", content: "Learn array methods: map, filter, reduce", tags: ["javascript", "programming"], category: "Study", created: new Date() },
@@ -289,6 +271,14 @@ function setupEventListeners() {
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     document.getElementById('globalSearch').addEventListener('input', handleSearch);
     
+    // Delegated event listener for task checkboxes
+    document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('task-checkbox')) {
+            const taskId = parseInt(e.target.dataset.taskId);
+            toggleTaskComplete(taskId);
+        }
+    });
+    
     // Global modal close listener for Lenis scroll management
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal') && e.target.classList.contains('active')) {
@@ -315,6 +305,19 @@ function setupEventListeners() {
             }
         }
     });
+}
+
+// Toggle single task complete status
+function toggleTaskComplete(taskId) {
+    const task = appData.tasks.find(t => t.id === taskId);
+    if (task) {
+        task.status = task.status === 'Done' ? 'To Do' : 'Done';
+        saveAllData();
+        renderTasks();
+        updateDashboard();
+        updateProductivityStats();
+        showNotification(task.status === 'Done' ? 'Task done!' : 'Task reopened', 'success', 2000);
+    }
 }
 
 // Switch View with smooth transitions
@@ -353,19 +356,18 @@ function switchView(viewName) {
     });
 }
 
-// Apply stagger animation to elements
 function applyStaggerAnimation(container) {
     const animatableElements = container.querySelectorAll('.card, .note-card, .task-card, .snippet-card, .resource-card, .news-card, .event-card');
     
     animatableElements.forEach((el, index) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
+        el.style.transform = 'translateY(10px)';
         
         setTimeout(() => {
-            el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
             el.style.opacity = '1';
             el.style.transform = 'translateY(0)';
-        }, index * 50); // 50ms delay between each element
+        }, index * 25);
     });
 }
 
@@ -402,7 +404,6 @@ function toggleTheme() {
 }
 
 function changeTheme(theme) {
-    const savedThemePreference = theme; // Save original preference
     let appliedTheme = theme;
     
     if (theme === 'auto') {
@@ -410,12 +411,9 @@ function changeTheme(theme) {
         appliedTheme = prefersDark ? 'dark' : 'light';
     }
     
-    // Apply theme
     document.documentElement.setAttribute('data-theme', appliedTheme);
     appData.theme = appliedTheme;
-    
-    // Save preference to localStorage
-    localStorage.setItem('studyhub-theme', savedThemePreference);
+    localStorage.setItem('studyhub-theme', theme);
     
     // Update toggle button icon and aria-label
     const themeToggle = document.getElementById('themeToggle');
@@ -430,9 +428,130 @@ function changeTheme(theme) {
     showToast(`Theme changed to ${theme === 'auto' ? 'Auto' : appliedTheme === 'dark' ? 'Dark' : 'Light'} mode`, 'success');
 }
 
-// Update Dashboard
+function toggleSetting(setting) {
+    if (appData.settings.hasOwnProperty(setting)) {
+        appData.settings[setting] = !appData.settings[setting];
+        
+        // Update toggle UI
+        updateSettingsUI();
+        
+        // Apply setting effects
+        applySettingEffect(setting);
+        
+        // Save settings
+        localStorage.setItem('aura-settings', JSON.stringify(appData.settings));
+        
+        const settingLabels = {
+            autoSave: 'Auto Save',
+            notifications: 'Notifications',
+            soundEffects: 'Sound Effects',
+            compactMode: 'Compact Mode',
+            showCompleted: 'Show Completed'
+        };
+        
+        showNotification(`${settingLabels[setting]} ${appData.settings[setting] ? 'enabled' : 'disabled'}`, 'success', 2000);
+    }
+}
+
+function applySettingEffect(setting) {
+    switch (setting) {
+        case 'compactMode':
+            document.body.classList.toggle('compact-mode', appData.settings.compactMode);
+            break;
+        case 'showCompleted':
+            renderTasks();
+            break;
+        case 'notifications':
+            if (appData.settings.notifications) {
+                initNotifications();
+            }
+            break;
+    }
+}
+
+function updateSettingsUI() {
+    // Update all toggle switches based on current settings
+    const toggleMappings = {
+        autoSaveToggle: 'autoSave',
+        notificationsToggle: 'notifications',
+        soundEffectsToggle: 'soundEffects',
+        compactModeToggle: 'compactMode',
+        showCompletedToggle: 'showCompleted'
+    };
+    
+    for (const [toggleId, settingKey] of Object.entries(toggleMappings)) {
+        const toggle = document.getElementById(toggleId);
+        if (toggle) {
+            if (appData.settings[settingKey]) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+        }
+    }
+}
+
+function initSettingsUI() {
+    // Load settings from localStorage
+    const savedSettings = localStorage.getItem('aura-settings');
+    if (savedSettings) {
+        try {
+            const parsed = JSON.parse(savedSettings);
+            appData.settings = { ...appData.settings, ...parsed };
+        } catch (e) {
+            console.error('Failed to parse settings:', e);
+        }
+    }
+    
+    // Apply initial settings
+    updateSettingsUI();
+    
+    // Apply compact mode if enabled
+    if (appData.settings.compactMode) {
+        document.body.classList.add('compact-mode');
+    }
+}
+
+// Clear All Data
+function clearAllData() {
+    if (confirm('⚠️ Are you sure you want to delete ALL data? This action cannot be undone!')) {
+        if (confirm('This will permanently delete all notes, tasks, snippets, and settings. Type "DELETE" to confirm.')) {
+            // Clear all localStorage items
+            localStorage.removeItem('aura-notes');
+            localStorage.removeItem('aura-tasks');
+            localStorage.removeItem('aura-snippets');
+            localStorage.removeItem('aura-schedule');
+            localStorage.removeItem('aura-settings');
+            localStorage.removeItem('aura-productivity');
+            localStorage.removeItem('aura-bookmarks');
+            localStorage.removeItem('aura-search-history');
+            
+            // Reset appData to defaults
+            appData.notes = [];
+            appData.tasks = [];
+            appData.snippets = [];
+            appData.schedule = [];
+            appData.bookmarks = [];
+            appData.searchHistory = [];
+            appData.settings = {
+                autoSave: true,
+                notifications: true,
+                soundEffects: true,
+                compactMode: false,
+                showCompleted: true
+            };
+            
+            // Re-render everything
+            renderAll();
+            updateDashboard();
+            updateSettingsUI();
+            
+            showNotification('All data cleared', 'success', 3000);
+        }
+    }
+}
+
 function updateDashboard() {
-    // Update greeting based on time of day
     updateGreeting();
     
     // Get current stats
@@ -483,7 +602,6 @@ function animateStatValue(elementId, targetValue) {
     requestAnimationFrame(updateValue);
 }
 
-// Update greeting based on time of day
 function updateGreeting() {
     const hour = new Date().getHours();
     const greetingElement = document.getElementById('greetingText');
@@ -504,7 +622,6 @@ function updateGreeting() {
     greetingElement.textContent = greeting;
 }
 
-// Update Recent Activity
 function updateRecentActivity() {
     const container = document.getElementById('recentActivity');
     if (!container) return;
@@ -551,7 +668,6 @@ function refreshRecentActivity() {
     showToast('Activity refreshed', 'success');
 }
 
-// Update Current Date
 function updateCurrentDate() {
     const now = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -564,7 +680,6 @@ function updateCurrentDate() {
     updateCurrentTime();
 }
 
-// Update Current Time (live clock)
 function updateCurrentTime() {
     const now = new Date();
     const timeElement = document.getElementById('currentTime');
@@ -578,7 +693,6 @@ function updateCurrentTime() {
     }
 }
 
-// Start live clock
 function startLiveClock() {
     updateCurrentTime();
     setInterval(updateCurrentTime, 1000);
@@ -611,7 +725,6 @@ function displayRandomQuote() {
     }, 300);
 }
 
-// Render All
 function renderAll() {
     renderNotes();
     renderTasks();
@@ -621,7 +734,6 @@ function renderAll() {
     updateWeekOverview();
 }
 
-// Render Notes
 function renderNotes() {
     const container = document.getElementById('notesContainer');
     if (appData.notes.length === 0) {
@@ -640,10 +752,14 @@ function renderNotes() {
     `).join('');
 }
 
-// Render Tasks
 function renderTasks(tasksToRender = null) {
     const container = document.getElementById('tasksContainer');
-    const tasks = tasksToRender || appData.tasks;
+    let tasks = tasksToRender || appData.tasks;
+    
+    // Filter based on showCompleted setting if no custom tasks provided
+    if (!tasksToRender && !appData.settings.showCompleted) {
+        tasks = tasks.filter(task => task.status !== 'Done');
+    }
     
     if (tasks.length === 0) {
         container.innerHTML = '<div class="empty-state"><i class="fas fa-tasks"></i><p>No tasks found. Try adjusting your filters!</p></div>';
@@ -653,7 +769,7 @@ function renderTasks(tasksToRender = null) {
     container.innerHTML = tasks.map(task => `
         <div class="card" style="animation: fadeIn 0.6s ease;">
             <div style="display: flex; align-items: flex-start; gap: var(--space-12); margin-bottom: var(--space-12);">
-                <input type="checkbox" class="task-checkbox" data-task-id="${task.id}">
+                <input type="checkbox" class="task-checkbox" data-task-id="${task.id}" ${task.status === 'Done' ? 'checked' : ''}>
                 <div style="flex: 1;">
                     <h3 style="margin-bottom: var(--space-8); ${task.status === 'Done' ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${task.title}</h3>
                     <p style="color: var(--color-text-secondary); margin-bottom: var(--space-12); font-size: var(--font-size-sm);">${task.description}</p>
@@ -668,7 +784,6 @@ function renderTasks(tasksToRender = null) {
     `).join('');
 }
 
-// Render Snippets
 function renderSnippets() {
     const container = document.getElementById('snippetsContainer');
     if (appData.snippets.length === 0) {
@@ -687,7 +802,6 @@ function renderSnippets() {
     `).join('');
 }
 
-// Render Resources
 function renderResources(resourcesToRender = null) {
     const container = document.getElementById('resourcesContainer');
     const resources = resourcesToRender || appData.resources;
@@ -819,7 +933,7 @@ function bookmarkResource(id) {
     showToast('Resource bookmarked!', 'success');
 }
 
-// Pomodoro Timer
+// timers
 let pomodoroInterval = null;
 let pomodoroSeconds = 25 * 60;
 
@@ -862,7 +976,6 @@ function updatePomodoroDisplay() {
         `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Stopwatch
 let stopwatchInterval = null;
 let stopwatchSeconds = 0;
 
@@ -898,7 +1011,6 @@ function updateStopwatchDisplay() {
         `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Countdown
 let countdownInterval = null;
 let countdownSeconds = 0;
 
@@ -940,7 +1052,6 @@ function updateCountdownDisplay() {
         `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// Clock
 function updateClock() {
     const now = new Date();
     const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -956,14 +1067,13 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// Focus Mode Variables
+// focus session
 let focusInterval = null;
 let focusSecondsRemaining = 0;
 let focusSessionMinutes = 0;
 let focusStartTime = null;
 let focusPaused = false;
 
-// Load Focus Data
 function loadFocusData() {
     const saved = localStorage.getItem('aura-focus-data');
     if (saved) {
@@ -986,7 +1096,6 @@ function loadFocusData() {
     }
 }
 
-// Save Focus Data
 function saveFocusData() {
     localStorage.setItem('aura-focus-data', JSON.stringify(appData.focusMode));
 }
@@ -1268,7 +1377,6 @@ function triggerConfetti() {
     }
 }
 
-// Toast Notifications
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
@@ -1285,7 +1393,6 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-// Render Schedule
 function renderSchedule(filterDay = 'all') {
     const container = document.getElementById('scheduleContainer');
     let scheduleItems = appData.schedule;
@@ -1916,11 +2023,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initTechEvents();
 });
 
-// ============================================
-// NEW ADVANCED FEATURES
-// ============================================
-
-// 1. KEYBOARD SHORTCUTS SYSTEM
+// keyboard shortcuts
 function initKeyboardShortcuts() {
     const shortcuts = {
         'ctrl+n': () => { switchView('notes'); showNoteEditor(); },
@@ -2005,7 +2108,6 @@ function showShortcutsModal() {
     requestAnimationFrame(() => modal.classList.add('active'));
 }
 
-// 2. AUTO-SAVE SYSTEM
 function initAutoSave() {
     if (appData.settings.autoSave) {
         setInterval(() => {
@@ -2024,9 +2126,9 @@ function saveAllData() {
         localStorage.setItem('aura-settings', JSON.stringify(appData.settings));
         localStorage.setItem('aura-productivity', JSON.stringify(appData.productivity));
         localStorage.setItem('aura-last-save', new Date().toISOString());
-        showNotification('💾 Data saved successfully', 'success', 2000);
+        showNotification('Data saved', 'success', 2000);
     } catch (e) {
-        showNotification('❌ Failed to save data', 'error', 3000);
+        showNotification('Failed to save', 'error', 3000);
         console.error('Save error:', e);
     }
 }
@@ -2054,7 +2156,6 @@ function loadAllData() {
     }
 }
 
-// 3. EXPORT/IMPORT SYSTEM
 function exportAllData() {
     const exportData = {
         version: '1.0',
@@ -2082,7 +2183,7 @@ function exportAllData() {
     
     appData.lastBackup = new Date().toISOString();
     localStorage.setItem('aura-last-backup', appData.lastBackup);
-    showNotification('📦 Data exported successfully!', 'success', 3000);
+    showNotification('Data exported!', 'success', 3000);
 }
 
 function importData() {
@@ -2127,7 +2228,7 @@ function importData() {
     input.click();
 }
 
-// 4. ENHANCED SEARCH WITH HISTORY
+// search
 let searchTimeout = null;
 function handleSearch(event) {
     const query = event.target.value.toLowerCase().trim();
@@ -2268,7 +2369,6 @@ function showSearchResults(results, query) {
     requestAnimationFrame(() => modal.classList.add('active'));
 }
 
-// 5. PRODUCTIVITY TRACKING
 function updateProductivityStats() {
     const today = new Date().toDateString();
     const completedTasks = appData.tasks.filter(t => t.status === 'Done').length;
@@ -2311,7 +2411,7 @@ function showProductivityReport() {
     modal.innerHTML = `
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <h2>📊 Productivity Report</h2>
+                <h2>Productivity Report</h2>
                 <button class="modal-close" onclick="const m = this.closest('.modal'); m.classList.remove('active'); setTimeout(() => { m.remove(); document.body.style.overflow = 'auto'; }, 300);">
                     <i class="fas fa-times"></i>
                 </button>
@@ -2353,7 +2453,6 @@ function showProductivityReport() {
     requestAnimationFrame(() => modal.classList.add('active'));
 }
 
-// 6. NOTIFICATION SYSTEM
 function initNotifications() {
     if ('Notification' in window && appData.settings.notifications) {
         if (Notification.permission === 'default') {
@@ -2377,7 +2476,7 @@ function showNotification(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
-// 7. TASK FILTERING & SORTING
+// task filters
 function filterTasks(filter) {
     let filtered = [...appData.tasks];
     
@@ -2419,7 +2518,6 @@ function sortTasks(sortBy) {
     renderTasks(sorted);
 }
 
-// 8. BULK OPERATIONS
 function selectAllTasks() {
     const checkboxes = document.querySelectorAll('.task-checkbox');
     checkboxes.forEach(cb => cb.checked = true);
@@ -2469,7 +2567,6 @@ function markSelectedTasksComplete() {
     showNotification(`${checkboxes.length} task(s) marked complete`, 'success', 2000);
 }
 
-// 9. CLOSE ALL MODALS UTILITY
 function closeAllModals() {
     const modals = document.querySelectorAll('.modal');
     modals.forEach(modal => {
@@ -2480,10 +2577,6 @@ function closeAllModals() {
         }, 300);
     });
 }
-
-// ============================================
-// 10. TECH NEWS SECTION
-// ============================================
 
 function initTechNews() {
     // Sample tech news data
@@ -2665,7 +2758,7 @@ function bookmarkNews(newsId) {
     if (!appData.bookmarks.find(b => b.type === 'news' && b.id === newsId)) {
         appData.bookmarks.push({ type: 'news', id: newsId, title: news.title, date: new Date().toISOString() });
         localStorage.setItem('aura-bookmarks', JSON.stringify(appData.bookmarks));
-        showNotification('📌 Bookmarked!', 'success', 2000);
+        showNotification('Bookmarked!', 'success', 2000);
     } else {
         showNotification('Already bookmarked', 'info', 2000);
     }
@@ -2727,10 +2820,6 @@ function filterNewsByCategory(category) {
         </div>
     `).join('');
 }
-
-// ============================================
-// 11. TECH EVENTS SECTION
-// ============================================
 
 function initTechEvents() {
     // Sample tech events data
@@ -2943,7 +3032,7 @@ END:VCALENDAR`;
     link.click();
     URL.revokeObjectURL(url);
     
-    showNotification('📅 Event added to calendar!', 'success', 2000);
+    showNotification('Added to calendar!', 'success', 2000);
 }
 
 function shareEvent(eventId) {

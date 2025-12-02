@@ -3,29 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aura - A comprehensive learning platform with notes, tasks, code snippets, focus mode, and productivity tracking.">
-    <meta name="keywords" content="learning, productivity, notes, tasks, pomodoro, code snippets, focus mode">
-    <meta name="author" content="Aura Team">
+    <meta name="description" content="Aura - Your personal study companion for notes, tasks and focus sessions">
+    <meta name="keywords" content="study, notes, tasks, pomodoro, productivity">
+    <meta name="author" content="Awais Khan">
     <meta name="theme-color" content="#14b8a6">
     
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Aura - Enhanced Learning Platform">
-    <meta property="og:description" content="A comprehensive learning platform with notes, tasks, code snippets, focus mode, and productivity tracking.">
+    <meta property="og:title" content="Aura">
+    <meta property="og:description" content="Study smarter with Aura">
     <meta property="og:image" content="/og-image.png">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
-    
-    <title>Aura - Enhanced Learning Platform</title>
+    <title>Aura</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="styles.css">
-    <!-- Lenis Smooth Scroll -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="app.js" defer></script>
 </head>
 <body>
-    <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-content">
             <div class="preloader-logo">
@@ -38,7 +33,6 @@
         </div>
     </div>
 
-    <!-- Header -->
     <header class="header">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
@@ -72,7 +66,6 @@
         </div>
     </header>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
         <nav>
             <div class="nav-item active ripple" data-view="dashboard">
@@ -130,9 +123,7 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
-        <!-- Dashboard View -->
         <div id="dashboardView" class="view active">
             <div class="welcome-section">
                 <div class="welcome-content">
@@ -242,7 +233,6 @@
             </div>
         </div>
 
-        <!-- Notes View -->
         <div id="notesView" class="view">
             <div class="section-header">
                 <h1 class="section-title">My Notes</h1>
@@ -253,7 +243,6 @@
             <div id="notesContainer" class="grid-3"></div>
         </div>
 
-        <!-- Tasks View -->
         <div id="tasksView" class="view">
             <div class="section-header">
                 <h1 class="section-title">My Tasks</h1>
@@ -301,7 +290,6 @@
             <div id="tasksContainer" class="grid-3"></div>
         </div>
 
-        <!-- Snippets View -->
         <div id="snippetsView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Code Snippets</h1>
@@ -312,7 +300,6 @@
             <div id="snippetsContainer" class="grid-2"></div>
         </div>
 
-        <!-- Planner View -->
         <div id="plannerView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Study Planner</h1>
@@ -418,7 +405,6 @@
             </div>
         </div>
 
-        <!-- Pomodoro View -->
         <div id="pomodoroView" class="view">
             <div class="card" style="max-width: 600px; margin: 0 auto; text-align: center;">
                 <h1 class="section-title" style="margin-bottom: var(--space-lg);">Pomodoro Timer</h1>
@@ -438,7 +424,6 @@
             </div>
         </div>
 
-        <!-- Timer View -->
         <div id="timerView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Advanced Timer</h1>
@@ -465,7 +450,6 @@
             </div>
         </div>
 
-        <!-- Clock View -->
         <div id="clockView" class="view">
             <div class="section-header">
                 <h1 class="section-title">World Clock</h1>
@@ -476,7 +460,6 @@
             </div>
         </div>
 
-        <!-- Focus View -->
         <div id="focusView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Focus Mode</h1>
@@ -583,7 +566,6 @@
             </div>
         </div>
 
-        <!-- Resources View -->
         <div id="resourcesView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Learning Resources</h1>
@@ -624,7 +606,6 @@
             <div id="resourcesContainer" class="grid-2"></div>
         </div>
 
-        <!-- Tech News View -->
         <div id="technewsView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Tech News</h1>
@@ -659,7 +640,6 @@
             <div id="newsContainer" class="grid-2"></div>
         </div>
 
-        <!-- Tech Events View -->
         <div id="techeventsView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Tech Events</h1>
@@ -699,36 +679,148 @@
             <div id="eventsContainer" class="grid-2"></div>
         </div>
 
-        <!-- Settings View -->
         <div id="settingsView" class="view">
             <div class="section-header">
                 <h1 class="section-title">Settings</h1>
             </div>
-            <div class="card">
-                <h3 style="margin-bottom: var(--space-md);">Appearance</h3>
-                <div style="margin-bottom: var(--space-lg);">
-                    <label class="form-label">Theme</label>
-                    <select class="form-select" id="themeSelect" onchange="changeTheme(this.value)">
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                        <option value="auto">Auto</option>
-                    </select>
+            
+            <div class="card settings-card" style="margin-bottom: var(--space-16);">
+                <div class="settings-card-header">
+                    <i class="fas fa-palette"></i>
+                    <h3>Appearance</h3>
                 </div>
-                <h3 style="margin-bottom: var(--space-md);">Notifications</h3>
-                <div>
-                    <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
-                        <input type="checkbox" id="notificationsEnabled" checked>
-                        <span>Enable notifications</span>
-                    </label>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Theme</label>
+                            <span class="setting-description">Choose your preferred color scheme</span>
+                        </div>
+                        <select class="form-select" id="themeSelect" onchange="changeTheme(this.value)" style="max-width: 150px;">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Compact Mode</label>
+                            <span class="setting-description">Use smaller spacing for more content</span>
+                        </div>
+                        <div class="toggle-switch" id="compactModeToggle" onclick="toggleSetting('compactMode')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card settings-card" style="margin-bottom: var(--space-16);">
+                <div class="settings-card-header">
+                    <i class="fas fa-cog"></i>
+                    <h3>Behavior</h3>
+                </div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Auto Save</label>
+                            <span class="setting-description">Automatically save data every 2 minutes</span>
+                        </div>
+                        <div class="toggle-switch active" id="autoSaveToggle" onclick="toggleSetting('autoSave')"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Show Completed Tasks</label>
+                            <span class="setting-description">Display completed tasks in the task list</span>
+                        </div>
+                        <div class="toggle-switch active" id="showCompletedToggle" onclick="toggleSetting('showCompleted')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card settings-card" style="margin-bottom: var(--space-16);">
+                <div class="settings-card-header">
+                    <i class="fas fa-bell"></i>
+                    <h3>Notifications</h3>
+                </div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Enable Notifications</label>
+                            <span class="setting-description">Show browser notifications for reminders</span>
+                        </div>
+                        <div class="toggle-switch active" id="notificationsToggle" onclick="toggleSetting('notifications')"></div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Sound Effects</label>
+                            <span class="setting-description">Play sounds for timers and alerts</span>
+                        </div>
+                        <div class="toggle-switch active" id="soundEffectsToggle" onclick="toggleSetting('soundEffects')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card settings-card" style="margin-bottom: var(--space-16);">
+                <div class="settings-card-header">
+                    <i class="fas fa-database"></i>
+                    <h3>Data Management</h3>
+                </div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Export Data</label>
+                            <span class="setting-description">Download all your data as JSON</span>
+                        </div>
+                        <button class="btn btn--primary btn--sm ripple" onclick="exportAllData()">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Import Data</label>
+                            <span class="setting-description">Restore data from a backup file</span>
+                        </div>
+                        <button class="btn btn--secondary btn--sm ripple" onclick="importData()">
+                            <i class="fas fa-upload"></i> Import
+                        </button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Clear All Data</label>
+                            <span class="setting-description">Permanently delete all your data</span>
+                        </div>
+                        <button class="btn btn--danger btn--sm ripple" onclick="clearAllData()">
+                            <i class="fas fa-trash-alt"></i> Clear Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card settings-card">
+                <div class="settings-card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>About</h3>
+                </div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Aura Learning Platform</label>
+                            <span class="setting-description">Version 1.0.0</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <label class="setting-label">Keyboard Shortcuts</label>
+                            <span class="setting-description">Press Ctrl+/ to view all shortcuts</span>
+                        </div>
+                        <button class="btn btn--secondary btn--sm ripple" onclick="showShortcutsModal()">
+                            <i class="fas fa-keyboard"></i> View
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Toast Container -->
     <div id="toastContainer"></div>
 
-    <!-- User Profile Modal -->
     <div id="userProfileModal" class="modal">
         <div class="modal-content" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDescription">
             <div class="modal-header">
@@ -784,7 +876,6 @@
         </div>
     </div>
 
-    <!-- Focus Session Modal -->
     <div id="focusSessionModal" class="modal focus-modal">
         <div class="modal-content focus-modal-content">
             <div class="focus-session-header">
@@ -823,7 +914,6 @@
         </div>
     </div>
 
-    <!-- Animated Network Background Canvas -->
     <canvas id="networkCanvas"></canvas>
 </body>
 </html>
