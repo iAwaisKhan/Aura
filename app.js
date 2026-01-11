@@ -2617,7 +2617,13 @@ function runImportBackupTests() {
 
                 if (validation.valid) {
                     applyImportedBackup(validation.data, { persistChanges: false, skipNotifications: true });
-                    console.log('Auto-save interval active:', Boolean(autoSaveIntervalId));
+                    const isActive = Boolean(autoSaveIntervalId);
+                    console.log('Auto-save interval active:', isActive);
+                    if (isActive === validation.data.settings.autoSave) {
+                        console.log('✅ Auto-save state matches backup settings');
+                    } else {
+                        console.error('❌ Auto-save state mismatch! Expected:', validation.data.settings.autoSave, 'Got:', isActive);
+                    }
                 }
             }
             console.groupEnd();
@@ -3573,4 +3579,4 @@ function renderFilteredEvents(events) {
             </div>
         </div>
     `}).join('');
-}
+}\n
