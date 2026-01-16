@@ -25,3 +25,13 @@ export function renderSnippets() {
         `;
     }).join('');
 }
+
+export function showSnippetEditor() {
+    import('./utils.js').then(u => u.showNotification('Snippet editor coming soon!', 'info'));
+}
+
+export function copySnippet(code) {
+    navigator.clipboard.writeText(code).then(() => {
+        import('./utils.js').then(u => u.showNotification('Code copied to clipboard!', 'success'));
+    });
+}

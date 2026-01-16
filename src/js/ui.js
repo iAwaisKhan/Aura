@@ -73,3 +73,31 @@ export function switchView(viewName, lenis) {
         }
     });
 }
+
+export function showShortcutsModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>⌨️ Keyboard Shortcuts</h2>
+                <button class="modal-close" onclick="const m = this.closest('.modal'); m.classList.remove('active'); setTimeout(() => { m.remove(); document.body.style.overflow = 'auto'; }, 300);">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; gap: var(--space-12);">
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>N</kbd><span>New Note</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>T</kbd><span>New Task</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>K</kbd><span>Focus Search</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>S</kbd><span>Save All</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>B</kbd><span>Export Backup</span></div>
+                    <div class="shortcut-item"><kbd>Ctrl</kbd> + <kbd>/</kbd><span>Show Shortcuts</span></div>
+                    <div class="shortcut-item"><kbd>Esc</kbd><span>Close Modal</span></div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    requestAnimationFrame(() => modal.classList.add('active'));
+}

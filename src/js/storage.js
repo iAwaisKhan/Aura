@@ -134,3 +134,96 @@ export function validateImportPayload(payload) {
         data: normalized
     };
 }
+
+export async function exportAllData() {
+    try {
+        const payload = {
+            version: DATA_EXPORT_VERSION,
+            timestamp: new Date().toISOString(),
+            data: {
+                notes: appData.notes,
+                tasks: appData.tasks,
+                snippets: appData.snippets,
+                schedule: appData.schedule,
+                settings: appData.settings,
+                productivity: appData.productivity,
+                userProfile: appData.userProfile,
+                focusMode: appData.focusMode,
+                theme: appData.theme,
+                searchHistory: appData.searchHistory,
+                bookmarks: appData.bookmarks
+            }
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `aura-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showNotification('Backup generated successfully', 'success', 3000);
+    } catch (e) {
+        showNotification('Failed to generate backup', 'error', 3000);
+        console.error('Export error:', e);
+    }
+}
+
+export async function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const payload = JSON.parse(e.target.result);
+                const validation = validateImportPayload(payload);
+
+                if (!validation.valid) {
+                    showNotification(validation.message, 'error', 5000);
+                    return;
+                }
+
+                if (!confirm('This will overwrite all current data. Are you sure?')) {
+                    return;
+                }
+
+                // Update app state
+                Object.assign(appData, validation.data);
+                
+                // Save to DB
+                await saveAllData();
+                
+                showNotification('Data imported successfully. Reloading...', 'success', 3000);
+                setTimeout(() => window.location.reload(), 2000);
+            } catch (err) {
+                showNotification('Invalid JSON file', 'error', 3000);
+                console.error('Import parse error:', err);
+            }
+        };
+        reader.readAsText(file);
+    } catch (e) {
+        showNotification('Failed to read file', 'error', 3000);
+        console.error('Import error:', e);
+    }
+}
+
+export async function clearAllData() {
+    if (!confirm('Are you ABSOLUTELY sure? All your notes, tasks, and settings will be permanently deleted.')) {
+        return;
+    }
+
+    try {
+        await db.clearDatabase();
+        localStorage.clear();
+        showNotification('All data cleared. Resetting...', 'success', 3000);
+        setTimeout(() => window.location.reload(), 2000);
+    } catch (e) {
+        showNotification('Failed to clear data', 'error', 3000);
+        console.error('Clear error:', e);
+    }
+}

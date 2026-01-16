@@ -1,5 +1,6 @@
 import { appData } from './state.js';
-import { escapeHTML } from './utils.js';
+import { escapeHTML, showNotification } from './utils.js';
+import { saveAllData } from './storage.js';
 
 export function renderNotes() {
     const container = document.getElementById('notesContainer');
@@ -15,7 +16,7 @@ export function renderNotes() {
         const safeContent = escapeHTML((note.content || '').substring(0, 100));
         const safeTags = (note.tags || []).map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('');
         return `
-            <div class="card" style="cursor: pointer; animation: fadeIn 0.6s ease;">
+            <div class="card" onclick="showNoteEditor(${note.id})" style="cursor: pointer; animation: fadeIn 0.6s ease;">
                 <h3 style="margin-bottom: var(--space-sm);">${safeTitle}</h3>
                 <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">${safeContent}...</p>
                 <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
@@ -24,4 +25,23 @@ export function renderNotes() {
             </div>
         `;
     }).join('');
+}
+
+export function showNoteEditor(noteId = null) {
+    showNotification('Note editor coming soon!', 'info');
+}
+
+export function saveNote() {
+    // Implementation
+    saveAllData();
+    renderNotes();
+}
+
+export function deleteNote(id) {
+    if (confirm('Are you sure you want to delete this note?')) {
+        appData.notes = appData.notes.filter(n => n.id !== id);
+        saveAllData();
+        renderNotes();
+        showNotification('Note deleted', 'success');
+    }
 }

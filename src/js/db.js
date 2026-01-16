@@ -72,3 +72,15 @@ export async function clearStore(storeName) {
         request.onerror = () => reject(request.error);
     });
 }
+
+export async function clearDatabase() {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.deleteDatabase(DB_NAME);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+        request.onblocked = () => {
+            console.warn('Delete database blocked');
+            resolve(); // Still resolve to let the app continue
+        };
+    });
+}

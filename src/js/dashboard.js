@@ -1,4 +1,5 @@
 import { appData } from './state.js';
+import { showNotification } from './utils.js';
 
 export function updateDashboard() {
     updateGreeting();
@@ -16,6 +17,11 @@ export function updateDashboard() {
     animateStatValue('savedResources', stats.savedResources);
     
     updateRecentActivity();
+}
+
+export function refreshRecentActivity() {
+    updateRecentActivity();
+    showNotification('Dashboard refreshed', 'success');
 }
 
 export function animateStatValue(elementId, targetValue) {

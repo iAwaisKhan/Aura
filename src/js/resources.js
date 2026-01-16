@@ -127,3 +127,18 @@ export function filterResources() {
 export function bookmarkResource(id) {
     showNotification('Resource bookmarked!', 'success');
 }
+
+export function showResourceEditor() {
+    showNotification('Resource editor coming soon!', 'info');
+}
+
+export function resetResourceFilters() {
+    const searchInput = document.getElementById('resourceSearch');
+    const categorySelect = document.getElementById('resourceCategoryFilter');
+    
+    if (searchInput) searchInput.value = '';
+    if (categorySelect) categorySelect.value = 'all';
+    
+    renderResources();
+    showNotification('Filters reset', 'success');
+}

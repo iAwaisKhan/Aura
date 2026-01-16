@@ -1,6 +1,9 @@
 import { switchView, toggleTheme } from './ui.js';
-import { handleSearch } from './app-logic.js'; // I'll create this later or move it
-import { toggleTaskComplete } from './tasks-logic.js'; // I'll create this later
+import { handleSearch } from './search.js';
+import { toggleTaskComplete } from './tasks.js';
+import { exportAllData, saveAllData } from './storage.js';
+import { showShortcutsModal } from './ui.js';
+import { appData } from './state.js';
 
 export function setupEventListeners(lenis) {
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -16,13 +19,21 @@ export function setupEventListeners(lenis) {
     const globalSearch = document.getElementById('globalSearch');
     if (globalSearch) globalSearch.addEventListener('input', handleSearch);
     
+    // Global keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey) {
+            switch(e.key.toLowerCase()) {
+                case 's': e.preventDefault(); saveAllData(); break;
+                case 'b': e.preventDefault(); exportAllData(); break;
+                case '/': e.preventDefault(); showShortcutsModal(); break;
+            }
+        }
+    });
+
     document.addEventListener('change', (e) => {
         if (e.target.classList.contains('task-checkbox')) {
             const taskId = parseInt(e.target.dataset.taskId);
-            // This will be imported from a separate task-logic file
-            if (typeof window.toggleTaskComplete === 'function') {
-                 window.toggleTaskComplete(taskId);
-            }
+            toggleTaskComplete(taskId);
         }
     });
     
@@ -33,19 +44,6 @@ export function setupEventListeners(lenis) {
                 document.body.style.overflow = 'auto';
                 if (lenis) lenis.start();
             }, 300);
-        }
-    });
-    
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', (e) => {
-        const savedTheme = localStorage.getItem('studyhub-theme');
-        if (savedTheme === 'auto') {
-            const newTheme = e.matches ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            const icon = document.querySelector('#themeToggle i');
-            if (icon) {
-                icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            }
         }
     });
 }

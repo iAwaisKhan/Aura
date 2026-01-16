@@ -41,6 +41,8 @@ export function showNotification(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
+export const showToast = showNotification;
+
 export function applyStaggerAnimation(container) {
     const animatableElements = container.querySelectorAll('.card, .note-card, .task-card, .snippet-card, .resource-card, .news-card, .event-card');
     

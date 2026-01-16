@@ -50,9 +50,10 @@
             <button class="theme-toggle" onclick="exportAllData()" aria-label="Export Data" title="Export Backup (Ctrl+B)">
                 <i class="fas fa-download"></i>
             </button>
-            <button class="theme-toggle" onclick="importData()" aria-label="Import Data" title="Import Backup">
+            <button class="theme-toggle" onclick="document.getElementById('importFile').click()" aria-label="Import Data" title="Import Backup">
                 <i class="fas fa-upload"></i>
             </button>
+            <input type="file" id="importFile" style="display: none;" onchange="importData(event)">
             <button class="user-avatar" id="userAvatar" aria-label="User Profile" title="View Profile" onclick="openUserProfile()">
                 <i class="fas fa-user"></i>
             </button>

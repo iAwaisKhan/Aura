@@ -3,6 +3,7 @@ import { renderNotes } from './notes.js';
 import { renderTasks } from './tasks.js';
 import { renderSnippets } from './snippets.js';
 import { renderResources } from './resources.js';
+import { renderSchedule } from './schedule.js';
 import { updateDashboard } from './dashboard.js';
 
 export function loadSampleData() {
@@ -36,5 +37,6 @@ export function renderAll() {
     renderTasks();
     renderSnippets();
     renderResources();
+    renderSchedule();
     updateDashboard();
 }
