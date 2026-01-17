@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="/src/styles.css">
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
-    <script src="/src/app.js" type="module"></script>
+    <script src="/src/app.ts" type="module"></script>
 </head>
 <body>
     <header class="header">
@@ -50,7 +50,7 @@
             <button class="theme-toggle" onclick="exportAllData()" aria-label="Export Data" title="Export Backup (Ctrl+B)">
                 <i class="fas fa-download"></i>
             </button>
-            <button class="theme-toggle" onclick="document.getElementById('importFile').click()" aria-label="Import Data" title="Import Backup">
+            <button class="theme-toggle" onclick="document.getElementById('importFile').click(); return false;" aria-label="Import Data" title="Import Backup">
                 <i class="fas fa-upload"></i>
             </button>
             <input type="file" id="importFile" style="display: none;" onchange="importData(event)">
@@ -223,7 +223,10 @@
                         <i class="fas fa-redo"></i>
                     </button>
                 </div>
-                <div id="quoteDisplay" class="quote-display"></div>
+                <div id="quoteDisplay" class="quote-display">
+                    <div id="randomQuote" style="font-size: var(--font-size-xl); font-style: italic; margin-bottom: var(--space-8);"></div>
+                    <div id="quoteAuthor" style="text-align: right; color: var(--color-text-secondary); font-weight: var(--font-weight-medium);"></div>
+                </div>
             </div>
         </div>
 
@@ -268,13 +271,13 @@
                         </select>
                     </div>
                     <div style="display: flex; gap: var(--space-8); align-items: flex-end;">
-                        <button class="btn btn--secondary ripple" onclick="selectAllTasks()" title="Select All">
+                        <button class="btn btn-secondary ripple" onclick="selectAllTasks()" title="Select All">
                             <i class="fas fa-check-double"></i>
                         </button>
-                        <button class="btn btn--secondary ripple" onclick="markSelectedTasksComplete()" title="Mark Complete">
+                        <button class="btn btn-secondary ripple" onclick="markSelectedTasksComplete()" title="Mark Complete">
                             <i class="fas fa-check"></i>
                         </button>
-                        <button class="btn btn--secondary ripple" onclick="deleteSelectedTasks()" title="Delete Selected">
+                        <button class="btn btn-secondary ripple" onclick="deleteSelectedTasks()" title="Delete Selected">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -631,7 +634,7 @@
                         </select>
                     </div>
                     <div style="display: flex; gap: var(--space-8); align-items: flex-end;">
-                        <button class="btn btn--secondary ripple" onclick="initTechNews()" title="Refresh News">
+                        <button class="btn btn-secondary ripple" onclick="initTechNews()" title="Refresh News">
                             <i class="fas fa-redo"></i>
                         </button>
                     </div>
@@ -670,7 +673,7 @@
                         </select>
                     </div>
                     <div style="display: flex; gap: var(--space-8); align-items: flex-end;">
-                        <button class="btn btn--secondary ripple" onclick="initTechEvents()" title="Refresh Events">
+                        <button class="btn btn-secondary ripple" onclick="initTechEvents()" title="Refresh Events">
                             <i class="fas fa-redo"></i>
                         </button>
                     </div>
@@ -769,7 +772,7 @@
                             <label class="setting-label">Export Data</label>
                             <span class="setting-description">Download all your data as JSON</span>
                         </div>
-                        <button class="btn btn--primary btn--sm ripple" onclick="exportAllData()">
+                        <button class="btn btn-primary btn-sm ripple" onclick="exportAllData()">
                             <i class="fas fa-download"></i> Export
                         </button>
                     </div>
@@ -778,7 +781,7 @@
                             <label class="setting-label">Import Data</label>
                             <span class="setting-description">Restore data from a backup file</span>
                         </div>
-                        <button class="btn btn--secondary btn--sm ripple" onclick="importData()">
+                        <button class="btn btn-secondary btn-sm ripple" onclick="document.getElementById('importFile').click(); return false;">
                             <i class="fas fa-upload"></i> Import
                         </button>
                     </div>
@@ -787,7 +790,7 @@
                             <label class="setting-label">Clear All Data</label>
                             <span class="setting-description">Permanently delete all your data</span>
                         </div>
-                        <button class="btn btn--danger btn--sm ripple" onclick="clearAllData()">
+                        <button class="btn btn-danger btn-sm ripple" onclick="clearAllData()">
                             <i class="fas fa-trash-alt"></i> Clear Data
                         </button>
                     </div>
@@ -811,7 +814,7 @@
                             <label class="setting-label">Keyboard Shortcuts</label>
                             <span class="setting-description">Press Ctrl+/ to view all shortcuts</span>
                         </div>
-                        <button class="btn btn--secondary btn--sm ripple" onclick="showShortcutsModal()">
+                        <button class="btn btn-secondary btn-sm ripple" onclick="showShortcutsModal()">
                             <i class="fas fa-keyboard"></i> View
                         </button>
                     </div>

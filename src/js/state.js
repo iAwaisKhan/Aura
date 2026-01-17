@@ -37,9 +37,7 @@ export const appData = {
         showCompleted: true
     },
     searchHistory: [],
-    recentFiles: [],
     bookmarks: [],
-    lastBackup: null,
     techNews: [],
     techEvents: []
 };

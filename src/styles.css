@@ -505,98 +505,66 @@ pre code {
   box-shadow: var(--focus-ring);
 }
 
-.btn--primary {
+.btn-primary {
   background: linear-gradient(145deg, var(--color-primary), var(--color-primary-hover));
   color: var(--color-btn-primary-text);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.btn--primary:hover {
+.btn-primary:hover {
   background: linear-gradient(145deg, var(--color-primary-hover), var(--color-primary-active));
   transform: translateY(-2px) rotate(-0.5deg);
   box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.btn--primary:active {
+.btn-primary:active {
   background: var(--color-primary-active);
   transform: scale(0.98) rotate(0deg);
   box-shadow: var(--shadow-xs);
 }
 
-[data-theme="light"] .btn--primary {
+[data-theme="light"] .btn-primary {
   box-shadow: 0 3px 12px rgba(165, 98, 68, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-[data-theme="light"] .btn--primary:hover {
+[data-theme="light"] .btn-primary:hover {
   box-shadow: 0 6px 20px rgba(165, 98, 68, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   transform: translateY(-3px) rotate(-0.5deg);
 }
 
 /* Enhanced Dark Mode Primary Button - Warm terracotta */
-[data-theme="dark"] .btn--primary {
+[data-theme="dark"] .btn-primary {
   background: linear-gradient(145deg, #cd9173 0%, #b87d62 100%);
   color: #1a1816;
   box-shadow: 0 3px 12px rgba(205, 145, 115, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-[data-theme="dark"] .btn--primary:hover {
+[data-theme="dark"] .btn-primary:hover {
   background: linear-gradient(145deg, #d9a588 0%, #cd9173 100%);
   box-shadow: 0 6px 24px rgba(205, 145, 115, 0.4), 0 0 30px rgba(205, 145, 115, 0.15);
   transform: translateY(-3px) rotate(-0.5deg);
 }
 
-[data-theme="dark"] .btn--primary:active {
+[data-theme="dark"] .btn-primary:active {
   background: linear-gradient(145deg, #b87d62 0%, #a56244 100%);
   transform: scale(0.98);
 }
 
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-}
-
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
-  transform: translateY(-2px) rotate(-0.5deg);
-  box-shadow: var(--shadow-sm);
-  border-color: var(--color-primary);
-}
-
-.btn--secondary:active {
-  background: var(--color-secondary-active);
-  transform: scale(0.98);
-  box-shadow: none;
-}
-
-/* Enhanced Dark Mode Secondary Button */
-[data-theme="dark"] .btn--secondary {
-  background: rgba(255, 250, 245, 0.06);
-  border: 1px solid rgba(255, 250, 245, 0.12);
-}
-
-[data-theme="dark"] .btn--secondary:hover {
-  background: rgba(255, 250, 245, 0.1);
-  border-color: rgba(205, 145, 115, 0.4);
-  box-shadow: 0 4px 12px rgba(25, 22, 18, 0.3);
-}
-
-.btn--outline {
+.btn-outline {
   background: transparent;
   border: 2px solid var(--color-border);
   color: var(--color-text);
   border-radius: var(--radius-md);
 }
 
-.btn--outline:hover {
+.btn-outline:hover {
   background: var(--color-secondary);
   border-color: var(--color-primary);
   transform: translateY(-2px) rotate(-0.5deg);
 }
 
-.btn--outline:active {
+.btn-outline:active {
   transform: scale(0.98);
 }
 
@@ -667,12 +635,6 @@ select.form-control {
 }
 
 /* Add a dark mode specific caret */
-@media (prefers-color-scheme: dark) {
-  select.form-control {
-    background-image: var(--select-caret-dark);
-  }
-}
-
 /* Also handle data-theme */
 [data-theme="dark"] select.form-control {
   background-image: var(--select-caret-dark);
@@ -969,7 +931,7 @@ input[type="radio"]:focus {
 }
 
 /* Dark mode specifics */
-[data-theme="dark"] .btn--outline {
+[data-theme="dark"] .btn-outline {
   border: 1px solid var(--color-border-secondary);
 }
 
@@ -1020,21 +982,6 @@ input[type="radio"]:focus {
     --success: var(--color-success);
     --warning: var(--color-warning);
     --danger: var(--color-error);
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-primary: var(--color-surface);
-        --bg-secondary: var(--color-secondary);
-        --text-primary: var(--color-text);
-        --text-secondary: var(--color-text-secondary);
-        --accent: var(--color-primary);
-        --accent-hover: var(--color-primary-hover);
-        --border: var(--color-border);
-        --success: var(--color-success);
-        --warning: var(--color-warning);
-        --danger: var(--color-error);
-    }
 }
 
 * {
@@ -2255,12 +2202,6 @@ body::after {
 
 [data-theme="dark"] .form-select {
     background-image: var(--select-caret-dark);
-}
-
-@media (prefers-color-scheme: dark) {
-    .form-select {
-        background-image: var(--select-caret-dark);
-    }
 }
 
 .form-label {
@@ -4241,22 +4182,6 @@ body.compact-mode .card {
 
 body.compact-mode .section-header {
     margin-bottom: var(--space-16);
-}
-
-/* Danger Button */
-.btn--danger {
-    background: var(--color-error);
-    color: white;
-    border: none;
-}
-
-.btn--danger:hover {
-    background: #c0392b;
-    transform: translateY(-2px);
-}
-
-.btn--danger:active {
-    transform: translateY(0);
 }
 
 /* Responsive Settings */
