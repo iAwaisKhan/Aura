@@ -15,10 +15,6 @@ export function escapeForSingleQuote(value = '') {
         .replace(/\n/g, '\\n');
 }
 
-export function ensureArray(value, fallback = []) {
-    return Array.isArray(value) ? value : fallback;
-}
-
 export function ensureObject(value, fallback = {}) {
     if (value && typeof value === 'object' && !Array.isArray(value)) {
         return value;
@@ -40,8 +36,6 @@ export function showNotification(message, type = 'info', duration = 3000) {
         setTimeout(() => toast.remove(), 300);
     }, duration);
 }
-
-export const showToast = showNotification;
 
 export function applyStaggerAnimation(container) {
     const animatableElements = container.querySelectorAll('.card, .note-card, .task-card, .snippet-card, .resource-card, .news-card, .event-card');

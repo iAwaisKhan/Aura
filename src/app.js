@@ -13,7 +13,7 @@ import { applyStaggerAnimation } from './js/utils.js';
 import { setPomodoroMode, startPomodoro, pausePomodoro, resetPomodoro } from './js/pomodoro.js';
 import { filterResources, showResourceEditor, resetResourceFilters } from './js/resources.js';
 import { toggleTaskComplete, filterTasks, sortTasks, selectAllTasks, markSelectedTasksComplete, deleteSelectedTasks, showTaskEditor } from './js/tasks.js';
-import { showNoteEditor, saveNote, deleteNote } from './js/notes.js';
+import { showNoteEditor } from './js/notes.js';
 import { showSnippetEditor, copySnippet } from './js/snippets.js';
 import { showScheduleEditor, toggleScheduleComplete, filterSchedule } from './js/schedule.js';
 import { startFocusSession, startCustomFocusSession, pauseFocusSession, stopFocusSession, viewFocusHistory } from './js/focus.js';

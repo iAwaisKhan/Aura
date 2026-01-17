@@ -3,7 +3,6 @@ import { handleSearch } from './search.js';
 import { toggleTaskComplete } from './tasks.js';
 import { exportAllData, saveAllData } from './storage.js';
 import { showShortcutsModal } from './ui.js';
-import { appData } from './state.js';
 
 export function setupEventListeners(lenis) {
     document.querySelectorAll('.nav-item').forEach(item => {

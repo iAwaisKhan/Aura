@@ -30,18 +30,3 @@ export function renderNotes() {
 export function showNoteEditor(noteId = null) {
     showNotification('Note editor coming soon!', 'info');
 }
-
-export function saveNote() {
-    // Implementation
-    saveAllData();
-    renderNotes();
-}
-
-export function deleteNote(id) {
-    if (confirm('Are you sure you want to delete this note?')) {
-        appData.notes = appData.notes.filter(n => n.id !== id);
-        saveAllData();
-        renderNotes();
-        showNotification('Note deleted', 'success');
-    }
-}
