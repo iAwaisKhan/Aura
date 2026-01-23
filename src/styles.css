@@ -6,7 +6,7 @@
   
   /* Primitive Color Tokens - Warm Earth Palette */
   --color-white: rgba(255, 253, 250, 1);
-  --color-black: rgba(35, 30, 25, 1);
+  --color-black: rgba(0, 0, 0, 1);
   --color-cream-50: rgba(253, 251, 247, 1);
   --color-cream-100: rgba(255, 253, 248, 1);
   --color-parchment: rgba(248, 244, 235, 1);
@@ -55,18 +55,18 @@
   /* Semantic Color Tokens (Light Mode) */
   --color-background: var(--color-canvas);
   --color-surface: var(--color-cream-100);
-  --color-text: var(--color-espresso-900);
-  --color-text-secondary: var(--color-warm-500);
+  --color-text: #000000;
+  --color-text-secondary: rgba(0, 0, 0, 0.7);
   --color-primary: var(--color-terracotta-500);
   --color-primary-hover: var(--color-terracotta-600);
   --color-primary-active: var(--color-terracotta-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.1);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.16);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.22);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.18);
+  --color-secondary: rgba(0, 0, 0, 0.05);
+  --color-secondary-hover: rgba(0, 0, 0, 0.08);
+  --color-secondary-active: rgba(0, 0, 0, 0.12);
+  --color-border: rgba(0, 0, 0, 0.2);
   --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.1);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.08);
+  --color-card-border: rgba(0, 0, 0, 0.15);
+  --color-card-border-inner: rgba(0, 0, 0, 0.1);
   --color-error: var(--color-rust-500);
   --color-success: var(--color-sage-500);
   --color-warning: var(--color-amber-500);
