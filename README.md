@@ -5,7 +5,7 @@ A lightweight, modern personal productivity dashboard that combines a focus time
 <img width="3200" height="2000" alt="Screenshot (119)" src="https://github.com/user-attachments/assets/9d519c09-a51c-46b0-aa7e-f5c31e22c213" />
 
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - **Node.js** 18+ 
@@ -33,7 +33,7 @@ npm run build
 npm run preview
 ```
 
-## ✨ Features
+## Features
 
 - **Focus Timer** — Pomodoro-style focus sessions with visual timer display
 - **Notes** — Create, organize, and view your recent tech notes with minimalist design
@@ -44,7 +44,7 @@ npm run preview
 - **Mobile Responsive** — Fully optimized for desktop and mobile devices
 - **Dark Theme** — Sophisticated dark mode with blue accent colors (Aura signature)
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 Nexo/
@@ -84,7 +84,7 @@ Nexo/
 └── LICENSE                  
 ```
 
-## 🛠 Development
+## Development
 
 ### Key Technologies
 
@@ -123,7 +123,7 @@ Nexo/
 | `Focus.tsx` | Full-screen focus mode |
 | `Settings.tsx` | User preferences and theme toggle |
 
-## 🎨 Customization
+## Customization
 
 ### Theme Variables
 
@@ -154,14 +154,7 @@ const navItems = [
 ];
 ```
 
-## 📱 Mobile Optimization
-
-The app is fully responsive:
-- **Desktop**: Full-featured UI with expanded navigation and larger components
-- **Mobile**: Optimized touch targets, hidden labels on nav, adjusted spacing and typography
-- Breakpoint: `md:` (768px+) for responsive utilities
-
-## 🔒 Deployment
+## Deployment
 
 ### Build for Production
 
@@ -172,17 +165,17 @@ npm run build
 This creates a `dist/` folder with optimized, minified assets.
 
 
-## 📝 Notes
+## Notes
 
 - This is a **client-side only** app; all data is stored in the browser's localStorage
 - For production, consider integrating a backend for cloud sync
 - The focus timer uses the browser's Web Audio API for audio cues (when available)
 
-## 🤝 Contributing
+## Contributing
 
 Feel free to fork, modify, and improve this project for your own use. Share improvements back if you find enhancements!
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
